@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HYPEGRAPH | APPL FINAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #030303;
+        --surface: #0f0f0f;
+        --lime: #ccff00; /* Gen Z Acid Green */
+        --purple: #b0fb5d; /* Kita ganti purple jadi varian lime lain atau tetap ungu neon? Kita pakai ungu neon untuk kontras */
+        --accent: #7d5fff;
+        --white: #ffffff;
+        --grey: #888888;
+        --border: rgba(255, 255, 255, 0.12);
+        --glass: rgba(20, 20, 20, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        cursor: none; /* Custom Cursor */
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--white);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        overflow: hidden;
+        height: 100vh;
+        font-size: 16px;
+      }
+
+      /* --- 1. ATMOSPHERE (NOISE & GLOW) --- */
+      /* Efek Bintik/Noise ala Film */
+      .noise-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://grainy-gradients.vercel.app/noise.svg");
+        opacity: 0.05;
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      /* Ambient Glow Blobs */
+      .ambient-light {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(125, 95, 255, 0.15),
+          transparent 70%
+        );
+        border-radius: 50%;
+        top: -20%;
+        left: -10%;
+        animation: float 10s ease-in-out infinite alternate;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .ambient-light-2 {
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(204, 255, 0, 0.1),
+          transparent 70%
+        );
+        border-radius: 50%;
+        bottom: -10%;
+        right: -10%;
+        animation: float 12s ease-in-out infinite alternate-reverse;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(50px, 50px);
+        }
+      }
+
+      /* --- 2. CUSTOM CURSOR --- */
+      .cursor-dot,
+      .cursor-outline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: 9999;
+        pointer-events: none;
+      }
+      .cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--lime);
+      }
+      .cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+      }
+      /* Hover Effect */
+      body:hover .cursor-outline {
+        width: 60px;
+        height: 60px;
+        border-color: var(--lime);
+        opacity: 0.5;
+      }
+
+      /* --- 3. LAYOUT & SLIDES --- */
+      .slider-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 6vh 6vw;
+        display: grid;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        /* Efek Masuk: Blur + Slide Up */
+        transform: translateY(40px) scale(0.95);
+        filter: blur(10px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Easing Apple-style */
+      }
+
+      .slide.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+
+      /* GRID SYSTEM (BENTO BOX STYLE) */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 40% 1fr;
+        gap: 2rem;
+        height: 100%;
+      }
+
+      .center-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      /* --- 4. COMPONENTS (NEO-BRUTALISM) --- */
+
+      /* Typography */
+      h1 {
+        font-family: "Space Grotesk";
+        font-size: 7rem;
+        line-height: 0.85;
+        letter-spacing: -3px;
+        color: var(--white);
+        margin-bottom: 1rem;
+      }
+      h2 {
+        font-family: "Space Grotesk";
+        font-size: 3.5rem;
+        line-height: 1;
+        letter-spacing: -1px;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(90deg, #fff, #888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .mono-tag {
+        font-family: "JetBrains Mono";
+        font-size: 0.9rem;
+        color: var(--lime);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .mono-tag::before {
+        content: "// ";
+        color: var(--grey);
+      }
+
+      p {
+        font-size: 1.15rem;
+        color: #a1a1a1;
+        line-height: 1.6;
+        max-width: 90%;
+      }
+
+      /* Glass Cards */
+      .glass-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: border-color 0.3s;
+      }
+      .glass-card:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Diagram Container */
+      .diagram-box {
+        background: #080808;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px; /* Grid technic background */
+      }
+      .diagram-img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+        transition: transform 0.3s;
+      }
+      .diagram-img:hover {
+        transform: scale(1.02);
+      }
+
+      /* Button Modern */
+      .btn-neo {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--white);
+        padding: 12px 24px;
+        border-radius: 100px;
+        font-family: "JetBrains Mono";
+        font-size: 0.9rem;
+        cursor: none;
+        transition: all 0.3s;
+        margin-top: 20px;
+        display: inline-block;
+      }
+      .btn-neo:hover {
+        background: var(--lime);
+        color: black;
+        border-color: var(--lime);
+        box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+      }
+
+      /* --- 5. SPECIFIC SLIDE STYLES --- */
+
+      /* Team Members (Hover Card Effect) */
+      .team-row {
+        display: flex;
+        gap: 20px;
+        margin-top: 40px;
+        justify-content: center;
+        width: 100%;
+      }
+      .member {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 20px;
+        border-radius: 16px;
+        width: 220px;
+        text-align: center;
+        transition: transform 0.3s, border-color 0.3s;
+      }
+      .member:hover {
+        transform: translateY(-10px);
+        border-color: var(--lime);
+      }
+      .avatar {
+        width: 100px;
+        height: 100px;
+        background: #222;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        overflow: hidden;
+        border: 2px solid var(--grey);
+      }
+      .member:hover .avatar {
+        border-color: var(--lime);
+      }
+      .mem-name {
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: var(--white);
+      }
+      .mem-nim {
+        font-family: "JetBrains Mono";
+        font-size: 0.8rem;
+        color: var(--grey);
+      }
+
+      /* Heatmap Animation */
+      .radar-ping {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: var(--accent);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 0 0 rgba(125, 95, 255, 0.7);
+        animation: pulse-purple 2s infinite;
+      }
+      @keyframes pulse-purple {
+        0% {
+          box-shadow: 0 0 0 0 rgba(125, 95, 255, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 60px rgba(125, 95, 255, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(125, 95, 255, 0);
+        }
+      }
+
+      /* Progress Bar (Bottom) */
+      .progress-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: var(--lime);
+        width: 0%;
+        transition: width 0.5s;
+        z-index: 1000;
+      }
+
+      /* Nav Controls */
+      .nav-controls {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        display: flex;
+        gap: 10px;
+        z-index: 100;
+      }
+      .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+        transition: 0.3s;
+      }
+      .nav-btn:hover {
+        border-color: var(--lime);
+        color: var(--lime);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noise-overlay"></div>
+    <div class="ambient-light"></div>
+    <div class="ambient-light-2"></div>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="slider-wrapper">
+      <div class="slide active center-layout" id="slide-0">
+        <span class="mono-tag">FINAL PROJECT • APPL 2026</span>
+        <h1>HYPE<span style="color: var(--lime)">GRAPH</span></h1>
+        <p style="font-size: 1.5rem; color: var(--grey)">
+          Jaksel Viral Analytics & Forecasting System
+        </p>
+
+        <div class="team-row">
+          <div class="member">
+            <div class="avatar">
+              <img
+                src="https://api.dicebear.com/9.x/notionists/svg?seed=Felix&amp;backgroundColor=e0e7ff"
+                alt="Farhan"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mem-name">Farhan</div>
+            <div class="mem-nim">105223024</div>
+          </div>
+          <div class="member">
+            <div class="avatar">
+              <img
+                src="https://api.dicebear.com/9.x/notionists/svg?seed=Jessica&amp;backgroundColor=fce7f3"
+                alt="Alphard"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mem-name">Alphard</div>
+            <div class="mem-nim">105223000</div>
+          </div>
+          <div class="member">
+            <div class="avatar">
+              <img
+                src="https://api.dicebear.com/9.x/notionists/svg?seed=Mason&amp;backgroundColor=dcfce7"
+                alt="Ali"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mem-name">Ali</div>
+            <div class="mem-nim">105223021</div>
+          </div>
+          <div class="member">
+            <div class="avatar">
+              <img
+                src="https://api.dicebear.com/9.x/notionists/svg?seed=Leo&amp;backgroundColor=fef9c3"
+                alt="Irfan"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mem-name">Irfan</div>
+            <div class="mem-nim">105223000</div>
+          </div>
+          <div class="member">
+            <div class="avatar">
+              <img
+                src="https://api.dicebear.com/9.x/notionists/svg?seed=Ryan&amp;backgroundColor=dbeafe"
+                alt="Rino"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mem-name">Rino</div>
+            <div class="mem-nim">105223000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">01 // THE PROBLEM</span>
+          <h2>FOMO VS CHAOS</h2>
+          <p>
+            Gen Z terjebak dalam paradoks: Ingin datang ke tempat paling
+            <strong>Hype</strong>, tapi membenci <strong>Crowd</strong> yang
+            tidak terprediksi.
+          </p>
+          <br />
+          <div
+            style="
+              border-left: 2px solid var(--lime);
+              padding-left: 20px;
+              color: #fff;
+            "
+          >
+            "Google Maps hanya mendeteksi macet di jalan, bukan antrian kopi di
+            dalam cafe."
+          </div>
+        </div>
+        <div class="diagram-box">
+          <div
+            style="
+              position: relative;
+              width: 100%;
+              height: 100%;
+              overflow: hidden;
+            "
+          >
+            <svg
+              width="100%"
+              height="100%"
+              style="position: absolute; opacity: 0.2"
+            >
+              <line
+                x1="10%"
+                y1="0"
+                x2="10%"
+                y2="100%"
+                stroke="#fff"
+                stroke-width="1"
+              />
+              <line
+                x1="0"
+                y1="20%"
+                x2="100%"
+                y2="20%"
+                stroke="#fff"
+                stroke-width="1"
+              />
+              <line
+                x1="0"
+                y1="60%"
+                x2="100%"
+                y2="80%"
+                stroke="#fff"
+                stroke-width="1"
+              />
+              <path d="M 50 50 Q 200 200 400 50" stroke="#fff" fill="none" />
+            </svg>
+            <div class="radar-ping" style="top: 30%; left: 40%"></div>
+            <div
+              class="radar-ping"
+              style="
+                top: 60%;
+                left: 70%;
+                animation-delay: 0.5s;
+                background: var(--lime);
+              "
+            ></div>
+            <div
+              style="
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                font-family: 'JetBrains Mono';
+                font-size: 0.8rem;
+                color: var(--lime);
+              "
+            >
+              [LIVE] MONITORING: SENOPATI SECTOR
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">02 // THE SOLUTION</span>
+          <h2>PREDICT, DON'T JUST MONITOR.</h2>
+          <p>
+            HypeGraph menggunakan <strong>Time Series Analysis</strong> untuk
+            memprediksi keramaian di masa depan.
+          </p>
+
+          <div
+            style="
+              margin-top: 30px;
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 10px;
+            "
+          >
+            <div
+              style="
+                background: #222;
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              <div style="font-family: 'Space Grotesk'; font-size: 1.5rem">
+                Laravel
+              </div>
+              <div style="font-size: 0.8rem; color: var(--grey)">
+                Presentation Layer
+              </div>
+            </div>
+            <div
+              style="
+                background: #222;
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+                border: 1px solid var(--lime);
+              "
+            >
+              <div
+                style="
+                  font-family: 'Space Grotesk';
+                  font-size: 1.5rem;
+                  color: var(--lime);
+                "
+              >
+                Python
+              </div>
+              <div style="font-size: 0.8rem; color: var(--grey)">
+                Forecasting Engine
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <div style="color: var(--grey); font-family: 'JetBrains Mono'">
+            [ INSERT LANDING PAGE UI MOCKUP ]
+          </div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">03 // REQUIREMENTS</span>
+          <h2>SRS SUMMARY</h2>
+          <ul style="list-style: none; margin-top: 20px">
+            <li style="margin-bottom: 15px; display: flex; align-items: center">
+              <span style="color: var(--lime); margin-right: 10px">➜</span>
+              Crawling Data Medsos (Tags/Loc)
+            </li>
+            <li style="margin-bottom: 15px; display: flex; align-items: center">
+              <span style="color: var(--lime); margin-right: 10px">➜</span>
+              Visualisasi Heatmap Interaktif
+            </li>
+            <li style="margin-bottom: 15px; display: flex; align-items: center">
+              <span style="color: var(--lime); margin-right: 10px">➜</span> Push
+              Notification "Rising Star"
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glass-card"
+          style="background: rgba(204, 255, 0, 0.05); border-color: var(--lime)"
+        >
+          <h3>NON-FUNCTIONAL</h3>
+          <div
+            style="
+              font-family: 'JetBrains Mono';
+              margin-top: 20px;
+              font-size: 0.9rem;
+            "
+          >
+            <p>> Response Time: < 200ms</p>
+            <p>> Concurrency: 10k Users</p>
+            <p>> Security: AES-256 Encryption</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">04 // DATA FLOW</span>
+          <h2>SYSTEM ARCHITECTURE</h2>
+
+          <div style="display: flex; gap: 10px; margin: 20px 0">
+            <button class="btn-neo" onclick="showDFD(0)" style="margin: 0">
+              Context
+            </button>
+            <button class="btn-neo" onclick="showDFD(1)" style="margin: 0">
+              Level 1
+            </button>
+            <button class="btn-neo" onclick="showDFD(2)" style="margin: 0">
+              Level 2
+            </button>
+          </div>
+
+          <div id="dfd-txt-0">
+            <strong style="color: var(--lime)">Context Diagram:</strong><br />
+            Sistem sebagai "Black Box" yang memproses data dari Netizen & Google
+            API untuk User.
+          </div>
+          <div id="dfd-txt-1" style="display: none">
+            <strong style="color: var(--lime)">Level 1 Breakdown:</strong><br />
+            1.0 Crawling -> 2.0 AI Processing -> 3.0 Mapping.
+          </div>
+          <div id="dfd-txt-2" style="display: none">
+            <strong style="color: var(--lime)">Level 2 Forecasting:</strong
+            ><br />
+            Detail algoritma Time Series (Smoothing & Prediction).
+          </div>
+        </div>
+
+        <div class="diagram-box">
+          <img
+            id="dfd-img-0"
+            src="dfd_context.png"
+            class="diagram-img"
+            alt="DFD Context"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none; color: #555">[ IMG: DFD CONTEXT ]</div>
+
+          <img
+            id="dfd-img-1"
+            src="dfd_lvl1.png"
+            class="diagram-img"
+            alt="DFD Level 1"
+            style="display: none"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none; color: #555">[ IMG: DFD LEVEL 1 ]</div>
+
+          <img
+            id="dfd-img-2"
+            src="dfd_lvl2.png"
+            class="diagram-img"
+            alt="DFD Level 2"
+            style="display: none"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none; color: #555">[ IMG: DFD LEVEL 2 ]</div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">05 // INTERACTIONS</span>
+          <h2>USE CASE DIAGRAM</h2>
+          <p>Fitur Utama: <strong>Autonomous AI Actor</strong>.</p>
+          <br />
+          <p>
+            AI Engine bekerja di background, memicu Use Case
+            <em>"Generate Trend Report"</em> tanpa campur tangan manusia.
+          </p>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="usecase.png"
+            class="diagram-img"
+            alt="Use Case"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none">[ IMG: USE CASE ]</div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">06 // LOGIC FLOW</span>
+          <h2>SMART FILTERING</h2>
+          <p>Activity Diagram untuk menentukan badge "HYPE".</p>
+
+          <div
+            style="
+              margin-top: 30px;
+              background: #111;
+              padding: 20px;
+              border-radius: 12px;
+              border: 1px solid #333;
+            "
+          >
+            <div
+              style="
+                font-family: 'JetBrains Mono';
+                font-size: 0.8rem;
+                margin-bottom: 10px;
+              "
+            >
+              > RUN_LOGIC_TEST:
+            </div>
+            <button
+              class="btn-neo"
+              style="margin: 0; font-size: 0.8rem"
+              onclick="testLogic(50)"
+            >
+              INPUT: 50
+            </button>
+            <button
+              class="btn-neo"
+              style="margin: 0; font-size: 0.8rem"
+              onclick="testLogic(90)"
+            >
+              INPUT: 90
+            </button>
+            <div
+              id="logic-output"
+              style="margin-top: 15px; font-weight: bold; color: var(--grey)"
+            >
+              WAITING FOR INPUT...
+            </div>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="activity.png"
+            class="diagram-img"
+            alt="Activity"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none">[ IMG: ACTIVITY DIAGRAM ]</div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">07 // LIFECYCLE</span>
+          <h2>STATE MACHINE</h2>
+          <p>
+            Modeling perubahan status tempat: <br /><em>Hidden Gem</em> ➜
+            <em>Viral</em> ➜ <em>Overcrowded</em>.
+          </p>
+          <button class="btn-neo" id="state-btn" onclick="rotateState()">
+            STATUS: HIDDEN GEM
+          </button>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="state.png"
+            class="diagram-img"
+            alt="State"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none">[ IMG: STATE MACHINE ]</div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">08 // DATA STRUCTURE</span>
+          <h2>CLASS DIAGRAM</h2>
+          <p>Pemisahan Entity:</p>
+          <ul
+            style="
+              margin-top: 10px;
+              font-family: 'JetBrains Mono';
+              font-size: 0.9rem;
+            "
+          >
+            <li>+ HangoutSpot (Static)</li>
+            <li>+ ViralityMetric (Dynamic/Time Series)</li>
+          </ul>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="class.png"
+            class="diagram-img"
+            alt="Class"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none">[ IMG: CLASS DIAGRAM ]</div>
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">09 // MODULARITY</span>
+          <h2>PACKAGE DIAGRAM</h2>
+          <p>Microservice-lite Architecture:</p>
+          <br />
+          <strong style="color: var(--lime)"
+            >Presentation Layer (Laravel)</strong
+          >
+          terpisah total dari
+          <strong style="color: var(--accent)"
+            >Data Analysis Layer (Python)</strong
+          >.
+        </div>
+        <div class="diagram-box">
+          <img
+            src="package.png"
+            class="diagram-img"
+            alt="Package"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+          />
+          <div style="display: none">[ IMG: PACKAGE DIAGRAM ]</div>
+        </div>
+      </div>
+
+      <div class="slide center-layout">
+        <span class="mono-tag">10 // PROTOTYPE</span>
+        <h2>FINAL RESULTS</h2>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            height: 60vh;
+            margin-top: 20px;
+          "
+        >
+          <div class="diagram-box">
+            <div style="color: #555">[ SCREENSHOT DASHBOARD ]</div>
+          </div>
+          <div class="diagram-box">
+            <div style="color: #555">[ SCREENSHOT PREDICTION CHART ]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide center-layout" style="background: black">
+        <h1 style="font-size: 8rem; color: var(--lime)">THANKS.</h1>
+        <p style="letter-spacing: 5px">ANY QUESTIONS?</p>
+        <div
+          style="
+            margin-top: 50px;
+            font-family: 'JetBrains Mono';
+            color: var(--grey);
+          "
+        >
+          // SYSTEM_SHUTDOWN_INITIATED...
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <div class="nav-btn" onclick="moveSlide(-1)">❮</div>
+      <div class="nav-btn" onclick="moveSlide(1)">❯</div>
+    </div>
+
+    <script>
+      // 1. CURSOR LOGIC
+      const cursorDot = document.querySelector("[data-cursor-dot]");
+      const cursorOutline = document.querySelector("[data-cursor-outline]");
+
+      window.addEventListener("mousemove", function (e) {
+        const posX = e.clientX;
+        const posY = e.clientY;
+
+        // Dot follows instantly
+        cursorDot.style.left = `${posX}px`;
+        cursorDot.style.top = `${posY}px`;
+
+        // Outline follows with lag (animation in CSS)
+        cursorOutline.animate(
+          {
+            left: `${posX}px`,
+            top: `${posY}px`,
+          },
+          { duration: 500, fill: "forwards" }
+        );
+      });
+
+      // 2. SLIDER LOGIC
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".slide");
+      const progressBar = document.getElementById("progressBar");
+
+      function updateProgress() {
+        const percent = ((currentSlide + 1) / slides.length) * 100;
+        progressBar.style.width = `${percent}%`;
+      }
+
+      function moveSlide(dir) {
+        slides[currentSlide].classList.remove("active");
+        currentSlide += dir;
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+        slides[currentSlide].classList.add("active");
+        updateProgress();
+      }
+
+      // Keyboard Nav
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") moveSlide(1);
+        if (e.key === "ArrowLeft") moveSlide(-1);
+      });
+
+      // 3. DFD SWITCHER
+      function showDFD(idx) {
+        // Hide all images and texts
+        [0, 1, 2].forEach((i) => {
+          const img = document.getElementById(`dfd-img-${i}`);
+          if (img) img.style.display = "none";
+          document.getElementById(`dfd-txt-${i}`).style.display = "none";
+        });
+        // Show selected
+        const selectedImg = document.getElementById(`dfd-img-${idx}`);
+        if (selectedImg) selectedImg.style.display = "block";
+        document.getElementById(`dfd-txt-${idx}`).style.display = "block";
+      }
+
+      // 4. LOGIC SIMULATION
+      function testLogic(val) {
+        const out = document.getElementById("logic-output");
+        if (val > 80) {
+          out.innerHTML = `>> SCORE ${val}: <span style="color:var(--lime)">CRITICAL HYPE DETECTED</span>`;
+        } else {
+          out.innerHTML = `>> SCORE ${val}: <span style="color:var(--grey)">NORMAL TRAFFIC</span>`;
+        }
+      }
+
+      // 5. STATE MACHINE SIM
+      const states = [
+        "HIDDEN GEM",
+        "RISING STAR",
+        "VIRAL 🔥",
+        "OVERCROWDED ⛔",
+      ];
+      let stateIdx = 0;
+      function rotateState() {
+        stateIdx = (stateIdx + 1) % states.length;
+        const btn = document.getElementById("state-btn");
+        btn.innerText = "STATUS: " + states[stateIdx];
+        if (stateIdx === 2) btn.style.color = "var(--lime)";
+        else if (stateIdx === 3) btn.style.color = "red";
+        else btn.style.color = "white";
+      }
+
+      // Init
+      updateProgress();
+    </script>
+  </body>
+</html>
