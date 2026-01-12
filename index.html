@@ -40,7 +40,7 @@
         font-size: 16px;
       }
 
-      /* --- 1. COLOR BLEND ATMOSPHERE (GEN Z GRADIENTS) --- */
+      /* --- 1. COLOR BLEND ATMOSPHERE --- */
       .blob-cont {
         position: fixed;
         top: 0;
@@ -52,7 +52,6 @@
         pointer-events: none;
         background: #fff;
       }
-
       .blob {
         position: absolute;
         border-radius: 50%;
@@ -61,7 +60,6 @@
         animation: float 10s infinite alternate
           cubic-bezier(0.45, 0.05, 0.55, 0.95);
       }
-
       .blob-1 {
         top: -10%;
         left: -10%;
@@ -87,7 +85,6 @@
         animation-delay: -4s;
         opacity: 0.4;
       }
-
       .noise-overlay {
         position: fixed;
         top: 0;
@@ -99,7 +96,6 @@
         pointer-events: none;
         z-index: 0;
       }
-
       @keyframes float {
         0% {
           transform: translate(0, 0) scale(1);
@@ -109,7 +105,7 @@
         }
       }
 
-      /* --- 2. CUSTOM CURSOR (DARK MODE FOR VISIBILITY) --- */
+      /* --- 2. CURSOR --- */
       .cursor-dot,
       .cursor-outline {
         position: fixed;
@@ -138,14 +134,13 @@
         opacity: 0.5;
       }
 
-      /* --- 3. LAYOUT & SLIDES --- */
+      /* --- 3. LAYOUT --- */
       .slider-wrapper {
         position: relative;
         width: 100%;
         height: 100%;
         z-index: 10;
       }
-
       .slide {
         position: absolute;
         inset: 0;
@@ -158,9 +153,8 @@
         filter: blur(10px);
         transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         height: 100vh;
-        overflow: hidden; /* Fix layout shift */
+        overflow: hidden;
       }
-
       .slide.active {
         opacity: 1;
         visibility: visible;
@@ -168,8 +162,6 @@
         transform: translateY(0) scale(1);
         filter: blur(0);
       }
-
-      /* Grid Layout Updated */
       .grid-layout {
         display: grid;
         grid-template-columns: 35% 1fr;
@@ -186,9 +178,9 @@
         text-align: center;
       }
 
-      /* --- 4. GLASSMORPHISM CARDS (LIGHT THEME) --- */
+      /* --- 4. GLASS CARDS --- */
       .glass-card {
-        background: rgba(255, 255, 255, 0.35); /* More transparent */
+        background: rgba(255, 255, 255, 0.35);
         border: 1px solid #fff;
         border-radius: 24px;
         padding: 2.5rem;
@@ -208,17 +200,14 @@
         transform: translateY(-2px);
       }
 
-      /* DIAGRAM BOX (UPDATED WITH GLASSMORPHISM) */
+      /* DIAGRAM BOX (GLASS EFFECT) */
       .diagram-box {
-        /* Apply the same glass effect as .glass-card */
         background: rgba(255, 255, 255, 0.35);
         border: 1px solid #fff;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         border-radius: 24px;
-
-        /* Layout properties */
         width: 100%;
         height: 100%;
         display: flex;
@@ -226,24 +215,21 @@
         justify-content: center;
         position: relative;
         overflow: hidden;
-        padding: 20px; /* Add some padding so image doesn't touch edge */
+        padding: 20px;
       }
-
       .diagram-img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
-        /* Remove drop shadow so it looks like printed on paper */
         transition: transform 0.3s;
         cursor: zoom-in;
-        /* KUNCI: Membuat background putih gambar jadi transparan agar glass effect terlihat */
-        mix-blend-mode: multiply;
+        mix-blend-mode: multiply; /* Blends white background */
       }
       .diagram-img:hover {
         transform: scale(1.02);
       }
 
-      /* --- 5. TYPOGRAPHY (DARK ON LIGHT) --- */
+      /* --- 5. TYPOGRAPHY --- */
       h1 {
         font-family: "Space Grotesk";
         font-size: 7rem;
@@ -262,7 +248,6 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-
       .mono-tag {
         font-family: "JetBrains Mono";
         font-size: 0.9rem;
@@ -276,21 +261,19 @@
         padding: 4px 8px;
         border-radius: 4px;
       }
-
       p {
         font-size: 1.15rem;
         color: var(--text-muted);
         line-height: 1.6;
         font-weight: 500;
       }
-
       strong {
         color: #000;
         font-weight: 700;
         background: linear-gradient(180deg, transparent 60%, var(--lime) 60%);
       }
 
-      /* --- 6. BUTTONS (NEO-BRUTALISM LIGHT) --- */
+      /* --- 6. COMPONENTS --- */
       .btn-neo {
         background: #fff;
         border: 2px solid #000;
@@ -305,7 +288,7 @@
         margin-top: 15px;
         display: inline-block;
         margin-right: 8px;
-        box-shadow: 4px 4px 0px #000; /* Retro Shadow */
+        box-shadow: 4px 4px 0px #000;
       }
       .btn-neo:hover,
       .btn-neo.active-btn {
@@ -314,7 +297,6 @@
         background: var(--lime);
       }
 
-      /* --- 7. TEAM CARDS --- */
       .team-row {
         display: flex;
         gap: 20px;
@@ -359,7 +341,6 @@
         color: #666;
       }
 
-      /* --- 8. UI CONTROLS --- */
       .nav-controls {
         position: fixed;
         bottom: 40px;
@@ -412,7 +393,6 @@
         background: var(--cyan);
       }
 
-      /* --- 9. MODAL & MISC --- */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -421,7 +401,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 255, 255, 0.9); /* White overlay */
+        background-color: rgba(255, 255, 255, 0.95);
         justify-content: center;
         align-items: center;
         flex-direction: column;
@@ -470,8 +450,6 @@
         transition: width 0.5s;
         z-index: 1000;
       }
-
-      /* Animasi Radar (Updated Colors) */
       .radar-ping {
         position: absolute;
         width: 20px;
@@ -495,7 +473,6 @@
           box-shadow: 0 0 0 0 rgba(255, 0, 85, 0);
         }
       }
-
       @keyframes zoomIn {
         from {
           transform: scale(0.8);
@@ -550,7 +527,6 @@
         <p style="font-size: 1.5rem; color: #333; font-weight: 600">
           Jaksel Viral Analytics & Forecasting System
         </p>
-
         <div class="team-row">
           <div class="member">
             <div class="avatar">
@@ -846,7 +822,35 @@
 
       <div class="slide grid-layout">
         <div class="glass-card">
-          <span class="mono-tag">04 // DATA FLOW</span>
+          <span class="mono-tag">04 // INTERACTIONS</span>
+          <h2>USE CASE DIAGRAM</h2>
+          <p>Pemetaan aktor dan fungsionalitas sistem.</p>
+          <br />
+          <ul
+            style="
+              font-family: 'JetBrains Mono';
+              font-size: 0.9rem;
+              font-weight: bold;
+            "
+          >
+            <li>+ User: View & Search</li>
+            <li>+ Admin: Manage Data</li>
+            <li>+ AI Engine: Auto-Generate Trends</li>
+          </ul>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="KalcerID_APPL-USE CASE DIAGRAM .drawio.png"
+            class="diagram-img"
+            onclick="openModal(this.src, 'Use Case Diagram')"
+            onerror="this.style.display='none'"
+          />
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">05 // DATA FLOW</span>
           <h2>DFD ARCHITECTURE</h2>
           <div class="dfd-nav">
             <button class="btn-neo active-btn" onclick="showDFD(0)">
@@ -885,6 +889,7 @@
             src="KalcerID_APPL-CONTEXT DIAGRAM.drawio.png"
             class="diagram-img"
             onclick="openModal(this.src, 'DFD Context')"
+            onerror="this.style.display='none'"
           />
           <img
             id="dfd-img-1"
@@ -892,6 +897,7 @@
             class="diagram-img"
             style="display: none"
             onclick="openModal(this.src, 'DFD Level 1')"
+            onerror="this.style.display='none'"
           />
           <img
             id="dfd-img-2"
@@ -899,6 +905,7 @@
             class="diagram-img"
             style="display: none"
             onclick="openModal(this.src, 'DFD Level 2.1')"
+            onerror="this.style.display='none'"
           />
           <img
             id="dfd-img-3"
@@ -906,6 +913,7 @@
             class="diagram-img"
             style="display: none"
             onclick="openModal(this.src, 'DFD Level 2.2')"
+            onerror="this.style.display='none'"
           />
           <img
             id="dfd-img-4"
@@ -913,33 +921,7 @@
             class="diagram-img"
             style="display: none"
             onclick="openModal(this.src, 'DFD Level 2.3')"
-          />
-        </div>
-      </div>
-
-      <div class="slide grid-layout">
-        <div class="glass-card">
-          <span class="mono-tag">05 // INTERACTIONS</span>
-          <h2>SEQUENCE DIAGRAM</h2>
-          <p>Detail alur pendaftaran & verifikasi tempat.</p>
-          <br />
-          <ul
-            style="
-              font-family: 'JetBrains Mono';
-              font-size: 0.9rem;
-              font-weight: bold;
-            "
-          >
-            <li>+ Request User</li>
-            <li>+ Validasi Sistem</li>
-            <li>+ Verifikasi Admin</li>
-          </ul>
-        </div>
-        <div class="diagram-box">
-          <img
-            src="KalcerID_APPL-SEQUENCE DIAGRAM .drawio.png"
-            class="diagram-img"
-            onclick="openModal(this.src, 'Sequence Diagram')"
+            onerror="this.style.display='none'"
           />
         </div>
       </div>
@@ -1007,38 +989,14 @@
             src="KalcerID_APPL-ACTIVITY DIAGRAM .drawio.png"
             class="diagram-img"
             onclick="openModal(this.src, 'Activity Diagram')"
-          />
-        </div>
-      </div>
-
-      <div class="slide grid-layout">
-        <div class="glass-card">
-          <span class="mono-tag">07 // LIFECYCLE</span>
-          <h2>STATE MACHINE</h2>
-          <p>
-            Status tempat: <br /><em>Hidden Gem</em> ➜ <em>Viral</em> ➜
-            <em>Overcrowded</em>.
-          </p>
-          <button class="btn-neo" id="state-btn" onclick="rotateState()">
-            STATUS: HIDDEN GEM
-          </button>
-        </div>
-        <div class="diagram-box">
-          <img
-            src="KalcerID_APPL-STATE MACHINE DIAGRAM .drawio.png"
-            class="diagram-img"
             onerror="this.style.display='none'"
-            onclick="openModal(this.src, 'State Machine')"
           />
-          <div style="display: none; color: #000; font-weight: bold">
-            [ IMG: STATE MACHINE ]
-          </div>
         </div>
       </div>
 
       <div class="slide grid-layout">
         <div class="glass-card">
-          <span class="mono-tag">08 // STRUCTURE</span>
+          <span class="mono-tag">07 // STRUCTURE</span>
           <h2>CLASS DIAGRAM</h2>
           <p>Relasi Database & Objek.</p>
           <ul
@@ -1058,13 +1016,14 @@
             src="KalcerID_APPL-CLASS DIAGRAM .drawio.png"
             class="diagram-img"
             onclick="openModal(this.src, 'Class Diagram')"
+            onerror="this.style.display='none'"
           />
         </div>
       </div>
 
       <div class="slide grid-layout">
         <div class="glass-card">
-          <span class="mono-tag">09 // SNAPSHOT</span>
+          <span class="mono-tag">08 // SNAPSHOT</span>
           <h2>OBJECT DIAGRAM</h2>
           <p>Gambaran instance data pada saat runtime.</p>
         </div>
@@ -1073,13 +1032,85 @@
             src="KalcerID_APPL-OBJECT DIAGRAM .drawio.png"
             class="diagram-img"
             onclick="openModal(this.src, 'Object Diagram')"
+            onerror="this.style.display='none'"
           />
         </div>
       </div>
 
       <div class="slide grid-layout">
         <div class="glass-card">
-          <span class="mono-tag">10 // MODULARITY</span>
+          <span class="mono-tag">09 // INTERACTIONS</span>
+          <h2>SEQUENCE DIAGRAM</h2>
+          <p>Detail urutan pesan antar objek (Pendaftaran Tempat).</p>
+          <br />
+          <ul
+            style="
+              font-family: 'JetBrains Mono';
+              font-size: 0.9rem;
+              font-weight: bold;
+            "
+          >
+            <li>+ Request User</li>
+            <li>+ Validasi Sistem</li>
+            <li>+ Verifikasi Admin</li>
+          </ul>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="KalcerID_APPL-SEQUENCE DIAGRAM .drawio.png"
+            class="diagram-img"
+            onclick="openModal(this.src, 'Sequence Diagram')"
+            onerror="this.style.display='none'"
+          />
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">10 // CONSTRAINTS</span>
+          <h2>TIMING DIAGRAM</h2>
+          <p>Analisis batasan waktu respon sistem dan interaksi state.</p>
+          <br />
+          <p>
+            Menampilkan durasi maksimal yang diizinkan untuk setiap proses (pada
+            diagram ini proses nya adalah bagaimana agregasi rating bekerja).
+          </p>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="KalcerID_APPL-TIMING DIAGRAM .drawio.jpeg"
+            class="diagram-img"
+            onclick="openModal(this.src, 'Timing Diagram')"
+            onerror="this.style.display='none'"
+          />
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">11 // LIFECYCLE</span>
+          <h2>STATE MACHINE</h2>
+          <p>
+            Status Viralitas: <br /><em>under 80 📉</em>/
+            <em>Viral (> 80) 📈</em>
+          </p>
+          <button class="btn-neo" id="state-btn" onclick="rotateState()">
+            STATUS: HIDDEN GEM
+          </button>
+        </div>
+        <div class="diagram-box">
+          <img
+            src="KalcerID_APPL-STATE MACHINE DIAGRAM .drawio.png"
+            class="diagram-img"
+            onclick="openModal(this.src, 'State Machine')"
+            onerror="this.style.display='none'"
+          />
+        </div>
+      </div>
+
+      <div class="slide grid-layout">
+        <div class="glass-card">
+          <span class="mono-tag">12 // MODULARITY</span>
           <h2>PACKAGE DIAGRAM</h2>
           <p>Layering Arsitektur Sistem.</p>
           <br /><strong>Presentation</strong> vs <strong>Data Layer</strong>.
@@ -1089,6 +1120,7 @@
             src="KalcerID_APPL-PACKAGE DIAGRAM .drawio.png"
             class="diagram-img"
             onclick="openModal(this.src, 'Package Diagram')"
+            onerror="this.style.display='none'"
           />
         </div>
       </div>
@@ -1194,7 +1226,6 @@
         stateIdx = (stateIdx + 1) % states.length;
         const btn = document.getElementById("state-btn");
         btn.innerText = "STATUS: " + states[stateIdx];
-        // Visual feedback color change
         if (stateIdx === 2) btn.style.background = "var(--lime)";
         else if (stateIdx === 3) btn.style.background = "#ff0055";
         else btn.style.background = "#fff";
